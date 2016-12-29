@@ -202,7 +202,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 camData.setName(cursor.getString(1));
                 camData.setLatitude(cursor.getString(2));
                 camData.setLongitude(cursor.getString(3));
-                camData.setURL(cursor.getString(4));
+                camData.setCamNorth(cursor.getString(4));
+                camData.setCamEast(cursor.getString(5));
+                camData.setCamSouth(cursor.getString(6));
+                camData.setCamWest(cursor.getString(7));
                 items.add(camData);
                 cursor.moveToNext();
                 count--;

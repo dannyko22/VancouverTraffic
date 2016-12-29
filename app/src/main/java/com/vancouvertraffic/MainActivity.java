@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +27,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -41,6 +43,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -56,6 +60,13 @@ public class MainActivity extends AppCompatActivity
     private UiSettings mapUISetting;
     Hashtable<String, Integer> markers;
     public ImageView urlImageView;
+    public Button buttonNorth;
+    public Button buttonEast;
+    public Button buttonSouth;
+    public Button buttonWest;
+    public String cameraAngle;
+    Marker _currentMarker;
+    boolean not_first_time_showing_info_window = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +126,61 @@ public class MainActivity extends AppCompatActivity
 
         setUpMapIfNeeded();
 
+        cameraAngle = "North";
+        buttonNorth = (Button) findViewById(R.id.buttonNorth);
+        buttonEast = (Button) findViewById(R.id.buttonEast);
+        buttonSouth = (Button) findViewById(R.id.buttonSouth);
+        buttonWest = (Button) findViewById(R.id.buttonWest);
 
+        buttonNorth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (urlImageView!=null) {
+                    if (!camList.get(markers.get(_currentMarker.getId())).getCamNorth().isEmpty()) {
+                        cameraAngle = "North";
+                        Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamNorth()).into(urlImageView);
+                    }
+                }
+            }});
+
+        buttonEast.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            if (urlImageView!=null) {
+                if (!camList.get(markers.get(_currentMarker.getId())).getCamEast().isEmpty()) {
+                    cameraAngle = "East";
+                    //Picasso.with(MainActivity.this).invalidate(camList.get(markers.get(_currentMarker.getId())).getCamEast());
+                    //Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamEast()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView);
+
+                    //_currentMarker.hideInfoWindow();
+                    Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamEast()).into(urlImageView);
+                    _currentMarker.showInfoWindow();
+
+                }
+            }
+        }});
+
+        buttonSouth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (urlImageView!=null) {
+                    if (!camList.get(markers.get(_currentMarker.getId())).getCamSouth().isEmpty()) {
+                        cameraAngle = "South";
+                        Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamSouth()).into(urlImageView);
+                    }
+                }
+            }});
+
+        buttonWest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (urlImageView!=null) {
+                    if (!camList.get(markers.get(_currentMarker.getId())).getCamWest().isEmpty()) {
+                        cameraAngle = "West";
+                        Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamWest()).into(urlImageView);
+                    }
+                }
+            }});
 
     }
 
@@ -223,12 +288,24 @@ public class MainActivity extends AppCompatActivity
         if (mMap != null)
         {
             mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(this));
-            mMap.setOnInfoWindowClickListener(this);
+            //mMap.setOnInfoWindowClickListener(this);
 
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 
                 @Override
                 public boolean onMarkerClick(final Marker mark) {
+                    if (!camList.get(markers.get(mark.getId())).getCamNorth().isEmpty()) {
+                        cameraAngle = "North";
+                    } else if (!camList.get(markers.get(mark.getId())).getCamEast().isEmpty()) {
+                        cameraAngle = "East";
+                    } else if (!camList.get(markers.get(mark.getId())).getCamSouth().isEmpty()) {
+                        cameraAngle = "South";
+                    } else {
+                        cameraAngle = "West";
+                    }
+
+                    _currentMarker = mark;
+
                     mark.showInfoWindow();
                     return true;
 
@@ -338,10 +415,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        String url = camList.get(markers.get(marker.getId())).getURL();
-        Uri uri = Uri.parse(url);
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
+//        String url = camList.get(markers.get(marker.getId())).getURL();
+//        Uri uri = Uri.parse(url);
+//        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//        startActivity(intent);
     }
 
     public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
@@ -350,8 +427,9 @@ public class MainActivity extends AppCompatActivity
         Context mContext;
         Marker previousMarker = null;
         Marker currentMarker = null;
-        boolean not_first_time_showing_info_window = false;
+
         Callback callback = null;
+        String camera;
 
         public CustomInfoWindowAdapter(Context context) {
             view = getLayoutInflater().inflate(R.layout.custom_info_window, null);
@@ -374,7 +452,15 @@ public class MainActivity extends AppCompatActivity
                 titleUi.setText("");
             }
 
-            final String url = camList.get(markers.get(marker.getId())).getURL();
+            switch (cameraAngle) {
+                case "North": camera = camList.get(markers.get(marker.getId())).getCamNorth(); break;
+                case "East": camera = camList.get(markers.get(marker.getId())).getCamEast(); break;
+                case "South": camera = camList.get(markers.get(marker.getId())).getCamSouth(); break;
+                case "West": camera = camList.get(markers.get(marker.getId())).getCamWest(); break;
+                default:
+                    Log.e("", "no case"); break;
+            }
+
             urlImageView = ((ImageView) view.findViewById(R.id.trafficimage));
 
 
@@ -382,7 +468,9 @@ public class MainActivity extends AppCompatActivity
                 // starting up app.  Enter this first if statement on first pass.
                 not_first_time_showing_info_window = true;
                 callback = new InfoWindowRefresher(marker);
-                Picasso.with(MainActivity.this).load(url).into(urlImageView, callback);
+                //Picasso.with(MainActivity.this).invalidate(camera);
+                //Picasso.with(MainActivity.this).load(camera).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView, callback);
+                Picasso.with(MainActivity.this).load(camera).into(urlImageView, callback);
             } else if (not_first_time_showing_info_window==true & previousMarker.getId().toString().compareTo(currentMarker.getId().toString()) != 0)
             {
                 // enter this if statement when the user quickly clicks on another marker.
@@ -391,18 +479,30 @@ public class MainActivity extends AppCompatActivity
                 // so this is what is needed to quickly go to the next marker and get the url image and properly refreshes the info window.
                 not_first_time_showing_info_window=true;
                 callback = new InfoWindowRefresher(marker);
-                Picasso.with(MainActivity.this).load(url).into(urlImageView,callback);
+                //Picasso.with(MainActivity.this).invalidate(camera);
+                //Picasso.with(MainActivity.this).load(camera).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView, callback);
+                Picasso.with(MainActivity.this).load(camera).into(urlImageView,callback);
             } else if (not_first_time_showing_info_window==true) {
                 // if the marker is clicked, and the user hasn't clicked on another marker, this is the default statement to go into.
-                Picasso.with(MainActivity.this).load(url).into(urlImageView);
+                Picasso.with(MainActivity.this).load(camera).into(urlImageView);
             } else if (not_first_time_showing_info_window==false & previousMarker.getId().toString().compareTo(currentMarker.getId().toString()) != 0) {
                 // if the user clicks on a marker, and the url from the previous click was fetched properly, and callback was completed
                 // and now the user wants to click on another marker, call this function.
                 not_first_time_showing_info_window=true;
                 callback = new InfoWindowRefresher(marker);
-                Picasso.with(MainActivity.this).load(url).into(urlImageView,callback);
-            }
 
+                //Picasso.with(MainActivity.this).invalidate(camera);
+                //Picasso.with(MainActivity.this).load(camera).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView, callback);
+                Picasso.with(MainActivity.this).load(camera).into(urlImageView,callback);
+            } else if (not_first_time_showing_info_window==false & previousMarker.getId().toString().compareTo(currentMarker.getId().toString()) == 0)
+            {
+                not_first_time_showing_info_window=true;
+                callback = new InfoWindowRefresher(marker);
+
+                //Picasso.with(MainActivity.this).invalidate(camera);
+                //Picasso.with(MainActivity.this).load(camera).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView, callback);
+                Picasso.with(MainActivity.this).load(camera).into(urlImageView,callback);
+            }
             return view;
         }
 
@@ -428,6 +528,11 @@ public class MainActivity extends AppCompatActivity
                     markerToRefresh.showInfoWindow();
                     not_first_time_showing_info_window=false;
                     callback = null;
+                } else if (markerToRefresh != null  && !markerToRefresh.isInfoWindowShown())
+                {
+                    markerToRefresh.showInfoWindow();
+                    not_first_time_showing_info_window=false;
+                    callback = null;
                 }
             }
 
@@ -436,4 +541,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
+
 }

@@ -10,7 +10,10 @@ public class CamData {
     String Name = "name";
     String Latitude = "Latitude";
     String Longitude = "Longitude";
-    String URL = "URL";
+    String camnorth = "";
+    String cameast = "";
+    String camsouth = "";
+    String camwest = "";
 
     // constructor.  empty data.
     public CamData(){
@@ -38,11 +41,6 @@ public class CamData {
         this.Longitude = _Longitude;
     }
 
-    public void setURL(String _URL)
-    {
-        this.URL = _URL;
-    }
-
     public int getID()
     {
         return _id;
@@ -63,10 +61,43 @@ public class CamData {
         return Longitude;
     }
 
-    public String getURL()
+    public void setCamNorth(String _camnorth)
     {
-        return URL;
+        this.camnorth = _camnorth;
     }
 
+    public String getCamNorth()
+    {
+        return camnorth;
+    }
 
+    public void setCamEast(String _cameast)
+    {
+        this.cameast = _cameast;
+    }
+
+    public String getCamEast()
+    {
+        return cameast;
+    }
+
+    public void setCamSouth(String _camsouth)
+    {
+        this.camsouth = _camsouth;
+    }
+
+    public String getCamSouth()
+    {
+        return camsouth;
+    }
+
+    public void setCamWest(String _camwest)
+    {
+        this.camwest = _camwest;
+    }
+
+    public String getCamWest()
+    {
+        return camwest;
+    }
 }

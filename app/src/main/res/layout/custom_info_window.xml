@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/custom_info_bubble"
+
     android:orientation="horizontal">
 
     <LinearLayout
@@ -10,7 +10,6 @@
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:id="@+id/layout2">
-
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
@@ -21,12 +20,16 @@
             android:textSize="14dp"
             android:textStyle="bold" />
 
+
+
         <ImageView
             android:id="@+id/trafficimage"
             android:layout_width="300dp"
             android:layout_height="200dp"
-            android:adjustViewBounds="true" >
+            android:adjustViewBounds="true"
+            android:clickable="false">
         </ImageView>
+
 
     </LinearLayout>
 
