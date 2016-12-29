@@ -132,13 +132,20 @@ public class MainActivity extends AppCompatActivity
         buttonSouth = (Button) findViewById(R.id.buttonSouth);
         buttonWest = (Button) findViewById(R.id.buttonWest);
 
+        //disable button
+        buttonNorth.setEnabled(false);
+        buttonEast.setEnabled(false);
+        buttonSouth.setEnabled(false);
+        buttonWest.setEnabled(false);
+
         buttonNorth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (urlImageView!=null) {
-                    if (!camList.get(markers.get(_currentMarker.getId())).getCamNorth().isEmpty()) {
+                    if (!isEmpty(camList.get(markers.get(_currentMarker.getId())).getCamNorth())) {
                         cameraAngle = "North";
-                        Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamNorth()).into(urlImageView);
+                        Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamNorth()).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView);
+                        _currentMarker.showInfoWindow();
                     }
                 }
             }});
@@ -147,13 +154,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
             if (urlImageView!=null) {
-                if (!camList.get(markers.get(_currentMarker.getId())).getCamEast().isEmpty()) {
+                if (!isEmpty(camList.get(markers.get(_currentMarker.getId())).getCamEast())) {
                     cameraAngle = "East";
-                    //Picasso.with(MainActivity.this).invalidate(camList.get(markers.get(_currentMarker.getId())).getCamEast());
-                    //Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamEast()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView);
-
-                    //_currentMarker.hideInfoWindow();
-                    Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamEast()).into(urlImageView);
+                    Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamEast()).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView);
                     _currentMarker.showInfoWindow();
 
                 }
@@ -164,9 +167,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (urlImageView!=null) {
-                    if (!camList.get(markers.get(_currentMarker.getId())).getCamSouth().isEmpty()) {
+                    if (!isEmpty(camList.get(markers.get(_currentMarker.getId())).getCamSouth())) {
                         cameraAngle = "South";
-                        Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamSouth()).into(urlImageView);
+                        Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamSouth()).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView);
+                        _currentMarker.showInfoWindow();
                     }
                 }
             }});
@@ -175,9 +179,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (urlImageView!=null) {
-                    if (!camList.get(markers.get(_currentMarker.getId())).getCamWest().isEmpty()) {
+                    if (!isEmpty(camList.get(markers.get(_currentMarker.getId())).getCamWest())) {
                         cameraAngle = "West";
-                        Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamWest()).into(urlImageView);
+                        Picasso.with(MainActivity.this).load(camList.get(markers.get(_currentMarker.getId())).getCamWest()).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView);
+                        _currentMarker.showInfoWindow();
                     }
                 }
             }});
@@ -294,14 +299,41 @@ public class MainActivity extends AppCompatActivity
 
                 @Override
                 public boolean onMarkerClick(final Marker mark) {
-                    if (!camList.get(markers.get(mark.getId())).getCamNorth().isEmpty()) {
+                    // set the first default camera to display
+                    if (!isEmpty(camList.get(markers.get(mark.getId())).getCamNorth())) {
                         cameraAngle = "North";
-                    } else if (!camList.get(markers.get(mark.getId())).getCamEast().isEmpty()) {
+                    } else if (!isEmpty(camList.get(markers.get(mark.getId())).getCamEast())) {
                         cameraAngle = "East";
-                    } else if (!camList.get(markers.get(mark.getId())).getCamSouth().isEmpty()) {
+                    } else if (!isEmpty(camList.get(markers.get(mark.getId())).getCamSouth())) {
                         cameraAngle = "South";
                     } else {
                         cameraAngle = "West";
+                    }
+
+                    // set which directional button to enable and disable
+                    if (!isEmpty(camList.get(markers.get(mark.getId())).getCamNorth())) {
+                        buttonNorth.setEnabled(true);
+                    } else
+                    {
+                        buttonNorth.setEnabled(false);
+                    }
+                    if (!isEmpty(camList.get(markers.get(mark.getId())).getCamEast())) {
+                        buttonEast.setEnabled(true);
+                    } else
+                    {
+                        buttonNorth.setEnabled(false);
+                    }
+                    if (!isEmpty(camList.get(markers.get(mark.getId())).getCamSouth())) {
+                        buttonSouth.setEnabled(true);
+                    } else
+                    {
+                        buttonNorth.setEnabled(false);
+                    }
+                    if (!isEmpty(camList.get(markers.get(mark.getId())).getCamWest())) {
+                        buttonWest.setEnabled(true);
+                    } else
+                    {
+                        buttonNorth.setEnabled(false);
                     }
 
                     _currentMarker = mark;
@@ -392,7 +424,7 @@ public class MainActivity extends AppCompatActivity
         else {
             cameraPosition = new CameraPosition.Builder()
                     .target(locationLatLngSetup) // Sets the center of the map
-                    .zoom(8)                   // Sets the zoom
+                    .zoom(12)                   // Sets the zoom
                     .bearing(0) // Sets the orientation of the camera to north
                     .tilt(0)    // Sets the tilt of the camera to 0 degrees
                     .build();    // Creates a CameraPosition from the builder
@@ -447,7 +479,8 @@ public class MainActivity extends AppCompatActivity
             // Loader image - will be shown before loading image
 
             if (title != null) {
-                titleUi.setText(title);
+                String tempTitle = title + " " + cameraAngle;
+                titleUi.setText(tempTitle);
             } else {
                 titleUi.setText("");
             }
@@ -469,8 +502,8 @@ public class MainActivity extends AppCompatActivity
                 not_first_time_showing_info_window = true;
                 callback = new InfoWindowRefresher(marker);
                 //Picasso.with(MainActivity.this).invalidate(camera);
-                //Picasso.with(MainActivity.this).load(camera).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView, callback);
-                Picasso.with(MainActivity.this).load(camera).into(urlImageView, callback);
+                //Picasso.with(MainActivity.this).load(camera).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView, callback);
+                Picasso.with(MainActivity.this).load(camera).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView, callback);
             } else if (not_first_time_showing_info_window==true & previousMarker.getId().toString().compareTo(currentMarker.getId().toString()) != 0)
             {
                 // enter this if statement when the user quickly clicks on another marker.
@@ -479,29 +512,23 @@ public class MainActivity extends AppCompatActivity
                 // so this is what is needed to quickly go to the next marker and get the url image and properly refreshes the info window.
                 not_first_time_showing_info_window=true;
                 callback = new InfoWindowRefresher(marker);
-                //Picasso.with(MainActivity.this).invalidate(camera);
-                //Picasso.with(MainActivity.this).load(camera).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView, callback);
                 Picasso.with(MainActivity.this).load(camera).into(urlImageView,callback);
             } else if (not_first_time_showing_info_window==true) {
                 // if the marker is clicked, and the user hasn't clicked on another marker, this is the default statement to go into.
-                Picasso.with(MainActivity.this).load(camera).into(urlImageView);
+                Picasso.with(MainActivity.this).load(camera).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView);
             } else if (not_first_time_showing_info_window==false & previousMarker.getId().toString().compareTo(currentMarker.getId().toString()) != 0) {
                 // if the user clicks on a marker, and the url from the previous click was fetched properly, and callback was completed
                 // and now the user wants to click on another marker, call this function.
                 not_first_time_showing_info_window=true;
                 callback = new InfoWindowRefresher(marker);
 
-                //Picasso.with(MainActivity.this).invalidate(camera);
-                //Picasso.with(MainActivity.this).load(camera).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView, callback);
-                Picasso.with(MainActivity.this).load(camera).into(urlImageView,callback);
+                Picasso.with(MainActivity.this).load(camera).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView,callback);
             } else if (not_first_time_showing_info_window==false & previousMarker.getId().toString().compareTo(currentMarker.getId().toString()) == 0)
             {
                 not_first_time_showing_info_window=true;
                 callback = new InfoWindowRefresher(marker);
 
-                //Picasso.with(MainActivity.this).invalidate(camera);
-                //Picasso.with(MainActivity.this).load(camera).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView, callback);
-                Picasso.with(MainActivity.this).load(camera).into(urlImageView,callback);
+                Picasso.with(MainActivity.this).load(camera).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView,callback);
             }
             return view;
         }
@@ -542,5 +569,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public static boolean isEmpty(CharSequence str) {
+        return str == null || str.length() == 0;
+    }
 
 }
