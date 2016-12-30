@@ -41,7 +41,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String Name = "name";
     private static final String Latitude = "Latitude";
     private static final String Longitude = "Longitude";
-    private static final String URL = "camnorth";
 
     /**
      * Constructor
