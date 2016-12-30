@@ -321,19 +321,19 @@ public class MainActivity extends AppCompatActivity
                         buttonEast.setEnabled(true);
                     } else
                     {
-                        buttonNorth.setEnabled(false);
+                        buttonEast.setEnabled(false);
                     }
                     if (!isEmpty(camList.get(markers.get(mark.getId())).getCamSouth())) {
                         buttonSouth.setEnabled(true);
                     } else
                     {
-                        buttonNorth.setEnabled(false);
+                        buttonSouth.setEnabled(false);
                     }
                     if (!isEmpty(camList.get(markers.get(mark.getId())).getCamWest())) {
                         buttonWest.setEnabled(true);
                     } else
                     {
-                        buttonNorth.setEnabled(false);
+                        buttonWest.setEnabled(false);
                     }
 
                     _currentMarker = mark;
@@ -438,7 +438,7 @@ public class MainActivity extends AppCompatActivity
             latitude = Double.parseDouble(camList.get(count-1).getLatitude());
             longitude = Double.parseDouble(camList.get(count-1).getLongitude());
             MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(latitude, longitude)).title(name);
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.carmarker));
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.carmaker5));
             Marker marker = mMap.addMarker(markerOptions);
             markers.put(marker.getId(), count-1);
             count--;
