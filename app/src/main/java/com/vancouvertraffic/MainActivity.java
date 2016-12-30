@@ -409,7 +409,7 @@ public class MainActivity extends AppCompatActivity
         Location myLocation = locationManager.getLastKnownLocation(provider);
 
         if (myLocation != null) {
-            if (myLocation.getLatitude() > 49.2 && myLocation.getLatitude() < 49.3 && myLocation.getLongitude() > -123.1 && myLocation.getLongitude() < -122.7) {
+            if (myLocation.getLatitude() > 49.0 && myLocation.getLatitude() < 49.6 && myLocation.getLongitude() > -123.4 && myLocation.getLongitude() < -122.2) {
                 // your current location is within Vancouver
                 locationLatLngSetup = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
                 outside_california = false;
