@@ -430,7 +430,7 @@ public class MainActivity extends AppCompatActivity
         {
             cameraPosition = new CameraPosition.Builder()
                     .target(locationLatLngSetup) // Sets the center of the map
-                    .zoom(6)                   // Sets the zoom
+                    .zoom(12)                   // Sets the zoom
                     .bearing(0) // Sets the orientation of the camera to north
                     .tilt(0)    // Sets the tilt of the camera to 0 degrees
                     .build();    // Creates a CameraPosition from the builder
@@ -601,8 +601,10 @@ public class MainActivity extends AppCompatActivity
 
     public  boolean isPermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
+            if ( (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) && (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) ) {
+                setUpMapIfNeeded();
                 return true;
             } else {
                 //requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -613,6 +615,8 @@ public class MainActivity extends AppCompatActivity
         }
         else { //permission is automatically granted on sdk<23 upon installation
 
+            // all permissions given.  just setup the map.
+            setUpMapIfNeeded();
             return true;
         }
     }
