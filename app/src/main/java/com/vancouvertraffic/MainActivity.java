@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.SQLException;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -38,6 +39,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -147,9 +150,17 @@ public class MainActivity extends AppCompatActivity
 
         //disable button
         buttonNorth.setEnabled(false);
+        buttonNorth.setBackgroundColor(Color.rgb(138,128,127));
+        buttonNorth.setTextColor(Color.rgb(154,154,154));
         buttonEast.setEnabled(false);
+        buttonEast.setBackgroundColor(Color.rgb(138,128,127));
+        buttonEast.setTextColor(Color.rgb(154,154,154));
         buttonSouth.setEnabled(false);
+        buttonSouth.setBackgroundColor(Color.rgb(138,128,127));
+        buttonSouth.setTextColor(Color.rgb(154,154,154));
         buttonWest.setEnabled(false);
+        buttonWest.setBackgroundColor(Color.rgb(138,128,127));
+        buttonWest.setTextColor(Color.rgb(154,154,154));
 
         buttonNorth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,7 +211,7 @@ public class MainActivity extends AppCompatActivity
                 }
             }});
 
-
+        initializeAdNetwork();
 
     }
 
@@ -338,27 +349,43 @@ public class MainActivity extends AppCompatActivity
                     // set which directional button to enable and disable
                     if (!isEmpty(camList.get(markers.get(mark.getId())).getCamNorth())) {
                         buttonNorth.setEnabled(true);
+                        buttonNorth.setBackgroundColor(Color.rgb(194,21,21));
+                        buttonNorth.setTextColor(Color.rgb(255,255,25));
                     } else
                     {
                         buttonNorth.setEnabled(false);
+                        buttonNorth.setBackgroundColor(Color.rgb(138,128,127));
+                        buttonNorth.setTextColor(Color.rgb(154,154,154));
                     }
                     if (!isEmpty(camList.get(markers.get(mark.getId())).getCamEast())) {
                         buttonEast.setEnabled(true);
+                        buttonEast.setBackgroundColor(Color.rgb(194,21,21));
+                        buttonEast.setTextColor(Color.rgb(255,255,25));
                     } else
                     {
                         buttonEast.setEnabled(false);
+                        buttonEast.setBackgroundColor(Color.rgb(138,128,127));
+                        buttonEast.setTextColor(Color.rgb(154,154,154));
                     }
                     if (!isEmpty(camList.get(markers.get(mark.getId())).getCamSouth())) {
                         buttonSouth.setEnabled(true);
+                        buttonSouth.setBackgroundColor(Color.rgb(194,21,21));
+                        buttonSouth.setTextColor(Color.rgb(255,255,25));
                     } else
                     {
                         buttonSouth.setEnabled(false);
+                        buttonSouth.setBackgroundColor(Color.rgb(138,128,127));
+                        buttonSouth.setTextColor(Color.rgb(154,154,154));
                     }
                     if (!isEmpty(camList.get(markers.get(mark.getId())).getCamWest())) {
                         buttonWest.setEnabled(true);
+                        buttonWest.setBackgroundColor(Color.rgb(194,21,21));
+                        buttonWest.setTextColor(Color.rgb(255,255,25));
                     } else
                     {
                         buttonWest.setEnabled(false);
+                        buttonWest.setBackgroundColor(Color.rgb(138,128,127));
+                        buttonWest.setTextColor(Color.rgb(154,154,154));
                     }
 
                     _currentMarker = mark;
@@ -491,10 +518,12 @@ public class MainActivity extends AppCompatActivity
             final String title = marker.getTitle();
             final TextView titleUi = ((TextView) view.findViewById(R.id.title));
             // Loader image - will be shown before loading image
+            TextView cameraAngleTextView = (TextView) findViewById(R.id.textViewDirection);
 
             if (title != null) {
-                String tempTitle = title + " " + cameraAngle;
+                String tempTitle = title;
                 titleUi.setText(tempTitle);
+                cameraAngleTextView.setText(cameraAngle);
             } else {
                 titleUi.setText("");
             }
@@ -645,6 +674,12 @@ public class MainActivity extends AppCompatActivity
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    private void initializeAdNetwork() {
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
 }

@@ -14,7 +14,10 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCXqCj-gUC6JZxZep_XP7SYCsTHb1mS1dU" />
-
+        <activity android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" >
+        </activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
