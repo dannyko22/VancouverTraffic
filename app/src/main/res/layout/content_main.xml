@@ -49,7 +49,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:text="Camera Direction"
+        android:text="Camera Direction Buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textViewDirection2"
@@ -64,16 +64,18 @@
         android:id="@+id/layout3"
         android:background="#e6dfde"
         android:gravity="center_horizontal">
+
         <Button
             android:text="N"
             android:layout_width="120px"
             android:layout_height="120px"
-
             android:textColor="#E6E6E6"
             android:textSize="30sp"
+            android:elevation="@dimen/elevation_high"
+            android:stateListAnimator="@animator/button_selector"
             android:background="@drawable/buttonshape"
-
             android:id="@+id/buttonNorth" />
+
         <Space
             android:layout_width="10px"
             android:layout_height="10px"/>
@@ -83,6 +85,8 @@
             android:layout_width="120px"
             android:layout_height="120px"
             android:textColor="#E6E6E6"
+            android:elevation="@dimen/elevation_high"
+            android:stateListAnimator="@animator/button_selector"
             android:textSize="30sp"
             android:background="@drawable/buttonshape"
             android:id="@+id/buttonEast" />
@@ -93,6 +97,8 @@
             android:text="S"
             android:layout_width="120px"
             android:layout_height="120px"
+            android:elevation="@dimen/elevation_high"
+            android:stateListAnimator="@animator/button_selector"
             android:textColor="#E6E6E6"
             android:textSize="30sp"
             android:background="@drawable/buttonshape"
@@ -105,6 +111,8 @@
             android:layout_width="120px"
             android:layout_height="120px"
             android:textColor="#E6E6E6"
+            android:elevation="@dimen/elevation_high"
+            android:stateListAnimator="@animator/button_selector"
             android:textSize="30sp"
             android:background="@drawable/buttonshape"
             android:id="@+id/buttonWest" />

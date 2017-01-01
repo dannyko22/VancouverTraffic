@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity
                 }
             }});
 
-        initializeAdNetwork();
+        //initializeAdNetwork();
 
     }
 
