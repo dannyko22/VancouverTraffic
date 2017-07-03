@@ -72,7 +72,7 @@
             android:textColor="#E6E6E6"
             android:textSize="30sp"
             android:elevation="@dimen/elevation_high"
-            android:stateListAnimator="@animator/button_selector"
+            android:stateListAnimator="@animator/button_state_list_anim_material"
             android:background="@drawable/buttonshape"
             android:id="@+id/buttonNorth" />
 
@@ -86,7 +86,7 @@
             android:layout_height="120px"
             android:textColor="#E6E6E6"
             android:elevation="@dimen/elevation_high"
-            android:stateListAnimator="@animator/button_selector"
+            android:stateListAnimator="@animator/button_state_list_anim_material"
             android:textSize="30sp"
             android:background="@drawable/buttonshape"
             android:id="@+id/buttonEast" />
@@ -98,7 +98,7 @@
             android:layout_width="120px"
             android:layout_height="120px"
             android:elevation="@dimen/elevation_high"
-            android:stateListAnimator="@animator/button_selector"
+            android:stateListAnimator="@animator/button_state_list_anim_material"
             android:textColor="#E6E6E6"
             android:textSize="30sp"
             android:background="@drawable/buttonshape"
@@ -112,7 +112,7 @@
             android:layout_height="120px"
             android:textColor="#E6E6E6"
             android:elevation="@dimen/elevation_high"
-            android:stateListAnimator="@animator/button_selector"
+            android:stateListAnimator="@animator/button_state_list_anim_material"
             android:textSize="30sp"
             android:background="@drawable/buttonshape"
             android:id="@+id/buttonWest" />

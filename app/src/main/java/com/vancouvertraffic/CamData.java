@@ -1,10 +1,14 @@
 package com.vancouvertraffic;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import io.nlopez.clusterer.Clusterable;
+
 /**
  * Created by Danny on 28/12/2016.
  */
 
-public class CamData {
+public class CamData implements Clusterable {
     // private variables
     int _id;
     String Name = "name";
@@ -20,6 +24,13 @@ public class CamData {
 
     }
 
+    @Override
+    public LatLng getPosition() {
+        double _latitude = Double.parseDouble(Latitude);
+        double _longitude = Double.parseDouble(Longitude);
+
+        return new LatLng(_latitude, _longitude);
+    }
 
     public void setID(int id)
     {

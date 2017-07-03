@@ -7,8 +7,8 @@ android {
         applicationId "com.vancouvertraffic"
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode 3
-        versionName "3.0"
+        versionCode 4
+        versionName "4.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         // Enabling multidex support.
         multiDexEnabled true
@@ -22,6 +22,9 @@ android {
 
 }
 
+repositories {
+    mavenCentral()
+}
 
 
 dependencies {
@@ -32,6 +35,8 @@ dependencies {
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.google.android.gms:play-services:9.6.1'
+    compile 'io.nlopez.clusterer:library:1.0.6'
+    compile 'com.google.maps.android:android-maps-utils:0.4+'
     compile files('C:/Users/Danny/AndroidStudioProjects/VancouverTraffic/app/libs/picasso-2.5.2.jar')
     testCompile 'junit:junit:4.12'
 }

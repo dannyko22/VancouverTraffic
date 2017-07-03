@@ -52,6 +52,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -60,6 +61,10 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+
+import io.nlopez.clusterer.Cluster;
+import io.nlopez.clusterer.Clusterable;
+import io.nlopez.clusterer.Clusterer;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
@@ -77,7 +82,6 @@ public class MainActivity extends AppCompatActivity
     public String cameraAngle;
     Marker _currentMarker;
     boolean not_first_time_showing_info_window = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,7 +215,9 @@ public class MainActivity extends AppCompatActivity
                 }
             }});
 
-        //initializeAdNetwork();
+        initializeAdNetwork();
+
+
 
     }
 
@@ -416,7 +422,7 @@ public class MainActivity extends AppCompatActivity
         String species;
         LatLng locationLatLngSetup;
         boolean outside_california = false;
-        CameraPosition cameraPosition;
+        final CameraPosition cameraPosition;
 
 
         mapUISetting = mMap.getUiSettings();
@@ -449,7 +455,7 @@ public class MainActivity extends AppCompatActivity
         else
         {
             // your current location is outside california
-            locationLatLngSetup = new LatLng(35.948698, -120.30248);
+            locationLatLngSetup = new LatLng(49.277147, -123.124342);
             outside_california = true;
         }
 
@@ -484,6 +490,8 @@ public class MainActivity extends AppCompatActivity
             markers.put(marker.getId(), count-1);
             count--;
         }
+
+
     }
 
     @Override
@@ -555,7 +563,7 @@ public class MainActivity extends AppCompatActivity
                 // so this is what is needed to quickly go to the next marker and get the url image and properly refreshes the info window.
                 not_first_time_showing_info_window=true;
                 callback = new InfoWindowRefresher(marker);
-                Picasso.with(MainActivity.this).load(camera).into(urlImageView,callback);
+                Picasso.with(MainActivity.this).load(camera).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView,callback);
             } else if (not_first_time_showing_info_window==true) {
                 // if the marker is clicked, and the user hasn't clicked on another marker, this is the default statement to go into.
                 Picasso.with(MainActivity.this).load(camera).networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE).into(urlImageView);
